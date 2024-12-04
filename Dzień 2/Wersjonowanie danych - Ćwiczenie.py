@@ -1,5 +1,5 @@
 # Databricks notebook source
-username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().tags().apply('user')
+username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get()
 name = username.split('@')[0].replace('.', '_')
 table_name = f"acxiom_szkolenie_sda.weather.us_{name}"
 print(table_name)

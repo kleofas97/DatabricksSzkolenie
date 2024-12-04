@@ -10,7 +10,7 @@ connection = sql.connect(
     access_token=os.environ["DATABRICKS_TOKEN"])
 
 cursor = connection.cursor()
-cursor.execute("SELECT * from samples.nyctaxi.trips limit 10")
+cursor.execute("SELECT * from  samples.nyctaxi.trips limit 10")
 print(cursor.fetchall())
 
 cursor.close()

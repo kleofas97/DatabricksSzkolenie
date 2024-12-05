@@ -127,7 +127,7 @@ display(hist)
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC DESCRIBE HISTORY table_name
+# MAGIC DESCRIBE HISTORY weather_pl
 
 # COMMAND ----------
 

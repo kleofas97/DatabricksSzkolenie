@@ -1,11 +1,21 @@
 # Databricks notebook source
-# MAGIC %md
-# MAGIC Stwórzmy tabele `acxiom_szkolenie_sda.weather.pl`. Teraz dodamy dane, które mam w Volumes
+username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get()
+name = username.split('@')[0].replace('.', '_')
+target_catalog= "training_catalog"
+target_schema= f"{name}_training"
+print(f"Using: '{target_catalog}.{target_schema}' catalog and schema")
+
+# COMMAND ----------
+
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {target_catalog}.{target_schema}")
+spark.sql(f"USE CATALOG {target_catalog}")
+spark.sql(f"USE SCHEMA {target_schema}")
+table_name = "weather_pl"
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Tworzymy tabele
+# MAGIC ### Wczytanie danych
 
 # COMMAND ----------
 
@@ -48,23 +58,18 @@ data.printSchema()
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC DESCRIBE TABLE acxiom_szkolenie_sda.weather.pl
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ### Dodajemy dane do Delty
 
 # COMMAND ----------
 
-data.write.format("delta").saveAsTable("acxiom_szkolenie_sda.weather.pl")
+data.write.format("delta").saveAsTable(table_name)
 
 # COMMAND ----------
 
 # %sql
 
-# CREATE TABLE IF NOT EXISTS acxiom_szkolenie_sda.weather.pl AS
+# CREATE TABLE IF NOT EXISTS table_name AS
 # SELECT * FROM weather_data
 
 # COMMAND ----------
@@ -84,7 +89,7 @@ new_data = (spark.read.format("csv")
 
 # COMMAND ----------
 
-new_data.write.format("delta").mode("append").saveAsTable("acxiom_szkolenie_sda.weather.pl")
+new_data.write.format("delta").mode("append").saveAsTable(table_name)
 
 # COMMAND ----------
 
@@ -94,7 +99,7 @@ new_data.write.format("delta").mode("append").saveAsTable("acxiom_szkolenie_sda.
 # COMMAND ----------
 
 import pyspark.sql.functions as F
-df = spark.read.table("acxiom_szkolenie_sda.weather.pl")
+df = spark.read.table(table_name)
 df_count =  (df.withColumn("Year", F.year(F.col("Timestamp")))
     .groupBy("Year")
     .count()
@@ -105,7 +110,7 @@ df_count.show()
 
 # MAGIC %sql
 # MAGIC SELECT YEAR(Timestamp) AS Year, COUNT(*) AS count
-# MAGIC FROM acxiom_szkolenie_sda.weather.pl
+# MAGIC FROM weather_pl
 # MAGIC GROUP BY YEAR(Timestamp)
 # MAGIC ORDER BY Year
 
@@ -116,13 +121,13 @@ df_count.show()
 
 # COMMAND ----------
 
-hist = spark.sql("DESCRIBE HISTORY acxiom_szkolenie_sda.weather.pl")
+hist = spark.sql(f"DESCRIBE HISTORY {table_name}")
 display(hist)
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC DESCRIBE HISTORY acxiom_szkolenie_sda.weather.pl
+# MAGIC DESCRIBE HISTORY table_name
 
 # COMMAND ----------
 
@@ -132,7 +137,7 @@ display(hist)
 # COMMAND ----------
 
 # Wyciągnięcie wersji 1
-previous_version_df = spark.read.option("versionAsOf", 0).table("acxiom_szkolenie_sda.weather.pl")
+previous_version_df = spark.read.option("versionAsOf", 0).table(table_name)
 
 df_count =  (previous_version_df.withColumn("Year", F.year(F.col("Timestamp")))
     .groupBy("Year")
@@ -148,7 +153,7 @@ df_count.show()
 # MAGIC     YEAR(Timestamp) AS Year, 
 # MAGIC     COUNT(*) AS count
 # MAGIC FROM 
-# MAGIC     acxiom_szkolenie_sda.weather.pl VERSION AS OF 0
+# MAGIC     weather_pl VERSION AS OF 0
 # MAGIC GROUP BY 
 # MAGIC     YEAR(Timestamp)
 # MAGIC ORDER BY 
@@ -179,11 +184,11 @@ display(fresh_path_data)
 
 # COMMAND ----------
 
-fresh_path_data.write.mode("append").saveAsTable("acxiom_szkolenie_sda.weather.pl")
+fresh_path_data.write.mode("append").saveAsTable(table_name)
 
 # COMMAND ----------
 
-fresh_path_data.write.option("mergeSchema", "true").mode("append").saveAsTable("acxiom_szkolenie_sda.weather.pl")
+fresh_path_data.write.option("mergeSchema", "true").mode("append").saveAsTable(table_name)
 
 # COMMAND ----------
 
@@ -192,17 +197,17 @@ fresh_path_data.write.option("mergeSchema", "true").mode("append").saveAsTable("
 
 # COMMAND ----------
 
-hist = spark.sql("DESCRIBE HISTORY acxiom_szkolenie_sda.weather.pl")
+hist = spark.sql(f"DESCRIBE HISTORY {table_name}")
 display(hist)
 
 # COMMAND ----------
 
-previous_version_df = spark.read.option("versionAsOf", 0).table("acxiom_szkolenie_sda.weather.pl")
+previous_version_df = spark.read.option("versionAsOf", 0).table(table_name)
 previous_version_df.show(10)
 
 # COMMAND ----------
 
-previous_version_df = spark.read.option("versionAsOf", 2).table("acxiom_szkolenie_sda.weather.pl")
+previous_version_df = spark.read.option("versionAsOf", 2).table(table_name)
 previous_version_df.show(10)
 
 # COMMAND ----------

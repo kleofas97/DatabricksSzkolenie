@@ -7,6 +7,12 @@ print(f"Using: '{target_catalog}.{target_schema}' catalog and schema")
 
 # COMMAND ----------
 
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {target_catalog}.{target_schema}")
+spark.sql(f"USE CATALOG {target_catalog}")
+spark.sql(f"USE SCHEMA {target_schema}")
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC Ćwiczenie Medalion architecture.
 # MAGIC

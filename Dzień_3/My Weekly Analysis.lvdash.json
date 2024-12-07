@@ -1,0 +1,296 @@
+{
+  "datasets": [
+    {
+      "name": "75602c3b",
+      "displayName": "weekly_stats",
+      "query": "select * from `training_catalog`.`adam_k_mika_training`.`weekly_stats`"
+    },
+    {
+      "name": "26546065",
+      "displayName": "taxi_raw_records",
+      "query": "select * from `training_catalog`.`adam_k_mika_training`.`taxi_raw_records`"
+    }
+  ],
+  "pages": [
+    {
+      "name": "0fa909ba",
+      "displayName": "Moja Podstawowa Wizualizacja",
+      "layout": [
+        {
+          "widget": {
+            "name": "6ed82fba",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "75602c3b",
+                  "fields": [
+                    {
+                      "name": "weekly(week)",
+                      "expression": "DATE_TRUNC(\"WEEK\", `week`)"
+                    },
+                    {
+                      "name": "avg(avg_amount)",
+                      "expression": "AVG(`avg_amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "weekly(week)",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "week"
+                },
+                "y": {
+                  "fieldName": "avg(avg_amount)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Average avg_amount"
+                }
+              },
+              "frame": {
+                "title": "Average Amount per Week",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "5c4d25f9",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "75602c3b",
+                  "fields": [
+                    {
+                      "name": "avg_distance",
+                      "expression": "`avg_distance`"
+                    },
+                    {
+                      "name": "daily(week)",
+                      "expression": "DATE_TRUNC(\"DAY\", `week`)"
+                    },
+                    {
+                      "name": "avg_amount",
+                      "expression": "`avg_amount`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "daily(week)",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "week"
+                },
+                "y": {
+                  "fieldName": "avg_amount",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "avg_amount"
+                },
+                "color": {
+                  "fieldName": "avg_distance",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "avg_distance"
+                }
+              },
+              "frame": {
+                "title": "Trip Distance vs Average Fare Amount by Day of the Week",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "d2a63246",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "26546065",
+                  "fields": [
+                    {
+                      "name": "pickup_zip",
+                      "expression": "`pickup_zip`"
+                    },
+                    {
+                      "name": "count(fare_amount)",
+                      "expression": "COUNT(`fare_amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "pickup_zip",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  },
+                  "displayName": "Pickup Zip"
+                },
+                "y": {
+                  "fieldName": "count(fare_amount)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Count of fare_amount"
+                }
+              },
+              "frame": {
+                "title": "Total trips across zip codes",
+                "showTitle": true,
+                "showDescription": false,
+                "description": ""
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "bbc32964",
+            "queries": [
+              {
+                "name": "dashboards/01efb4808c8911bd9bc6bf1c0eb08c85/datasets/01efb480c0b915d49739d3a8230f5ec7_week",
+                "query": {
+                  "datasetName": "75602c3b",
+                  "fields": [
+                    {
+                      "name": "week",
+                      "expression": "`week`"
+                    },
+                    {
+                      "name": "week_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-date-range-picker",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "week",
+                    "displayName": "week",
+                    "queryName": "dashboards/01efb4808c8911bd9bc6bf1c0eb08c85/datasets/01efb480c0b915d49739d3a8230f5ec7_week"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Choose Week",
+                "headerAlignment": "center",
+                "showDescription": true,
+                "description": "Choose weeks to choose statistics from"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "ff2aea26",
+            "queries": [
+              {
+                "name": "dashboards/01efb4808c8911bd9bc6bf1c0eb08c85/datasets/01efb481441012bfaa4dbd96c9e67bcd_dropoff_zip",
+                "query": {
+                  "datasetName": "26546065",
+                  "fields": [
+                    {
+                      "name": "dropoff_zip",
+                      "expression": "`dropoff_zip`"
+                    },
+                    {
+                      "name": "dropoff_zip_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "dropoff_zip",
+                    "displayName": "dropoff_zip",
+                    "queryName": "dashboards/01efb4808c8911bd9bc6bf1c0eb08c85/datasets/01efb481441012bfaa4dbd96c9e67bcd_dropoff_zip"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 6,
+            "height": 1
+          }
+        }
+      ]
+    }
+  ]
+}

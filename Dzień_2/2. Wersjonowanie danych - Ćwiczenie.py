@@ -24,4 +24,167 @@ spark.sql(f"USE SCHEMA {target_schema}")
 
 # COMMAND ----------
 
+table_name = "weather_us"
+
+# COMMAND ----------
+
+path_data = "/Volumes/acxiom_szkolenie_sda/weather/sample_weather_data/weather_data_2022_us.csv"
+
+data = (spark.read.format("csv")
+    .option("header", "true")
+    .option("inferSchema", "true")
+    .load(path_data))
+
+# COMMAND ----------
+
+from pyspark.sql.functions import year, col
+
+data = data.withColumn("YEAR", year("timestamp").cast("string"))
+display(data)
+# dodaje kolumne year osobno -na potrzeby partycjonowania
+
+# COMMAND ----------
+
+data.printSchema()
+
+# COMMAND ----------
+
+data.write.format("delta").saveAsTable(table_name)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Nowe dane za rok 2023
+
+# COMMAND ----------
+
+new_path_data = "/Volumes/acxiom_szkolenie_sda/weather/sample_weather_data/weather_data_2023_us.csv"
+
+new_data = (spark.read.format("csv")
+    .option("header", "true")
+    .option("inferSchema", "true")
+    .load(new_path_data))
+new_data = new_data.withColumn("YEAR", year("timestamp").cast("string"))
+
+# COMMAND ----------
+
+new_data.write.format("delta").mode("append").saveAsTable(table_name)
+
+# COMMAND ----------
+
+hist = spark.sql(f"DESCRIBE HISTORY {table_name}")
+display(hist)
+
+
+# COMMAND ----------
+
+spark.sql(f"SELECT DISTINCT year FROM {table_name}").show()
+
+# COMMAND ----------
+
+# nadpisanie roku 2023 jeszcze raz
+(new_data.write
+ .format("delta")
+ .mode("overwrite")
+ .option("replaceWhere", "YEAR = 2023")
+ .saveAsTable(table_name))
+
+# COMMAND ----------
+
+hist = spark.sql(f"DESCRIBE HISTORY {table_name}")
+display(hist)
+
+# COMMAND ----------
+
+spark.sql(f"SELECT DISTINCT year FROM {table_name}").show()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Dodanie do nowej tabeli, gdzie dane już są partycjonowane 
+
+# COMMAND ----------
+
+df = spark.sql(f"SELECT * FROM {table_name}")
+
+(
+df.write.format("delta")
+.mode("overwrite")
+.option("overwriteSchema", "true")
+.partitionBy("year")
+.saveAsTable(table_name + "_partitioned")
+)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Dodatkowa kolumna
+
+# COMMAND ----------
+
+import pyspark.sql.functions as F
+fresh_path = "/Volumes/acxiom_szkolenie_sda/weather/sample_weather_data/weather_data_2024_us.csv"
+
+fresh_path_data = (spark.read.format("csv")
+    .option("header", "true")
+    .option("inferSchema", "true")
+    .load(fresh_path))
+fresh_path_data = fresh_path_data.withColumn("YEAR", year("timestamp").cast("string"))
+fresh_path_data = fresh_path_data.withColumn("Source", F.lit("IMGW"))
+
+# COMMAND ----------
+
+(fresh_path_data.write
+ .format("delta")
+ .mode("append")
+ .option("mergeSchema", "true")
+ .partitionBy("YEAR")
+ .saveAsTable(table_name + "_partitioned"))
+
+# COMMAND ----------
+
+(fresh_path_data.write
+ .format("delta")
+ .mode("append")
+ .option("mergeSchema", "true")
+ .saveAsTable(table_name))
+
+# COMMAND ----------
+
+hist = spark.sql(f"DESCRIBE HISTORY {table_name}")
+display(hist)
+
+# COMMAND ----------
+
+version_2 = spark.sql(f"SELECT * FROM {table_name} VERSION AS OF 2")
+display(version_2)
+
+# COMMAND ----------
+
+version_2.show()
+
+# COMMAND ----------
+
+spark.read.table(table_name).schema
+
+# COMMAND ----------
+
+
+current_schema = spark.read.table(table_name).schema
+version_2_schema = version_2.schema
+
+# znajdz brakujace schemy
+missing_columns = [field for field in current_schema.fields if field.name not in version_2.columns]
+
+# dodanie nulla do tych schem - uwaga withColumn nie jest najszybszą wersją https://kb.databricks.com/en_US/scala/withcolumn-operation-when-using-in-loop-slows-performance
+for field in missing_columns:
+    version_2 = version_2.withColumn(field.name, F.lit(None).cast(field.dataType))
+
+# Poprawna kolejność
+version_2 = version_2.select([field.name for field in current_schema.fields])
+
+display(version_2)
+
+# COMMAND ----------
+
 

@@ -1,5 +1,10 @@
 # Databricks notebook source
 # MAGIC %md
+# MAGIC Dlaczego używamy Medalion Architecture: https://www.databricks.com/glossary/medallion-architecture
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC Ustawienia, aby każdy miał swój schemat w katalogu
 
 # COMMAND ----------

@@ -1,0 +1,648 @@
+{
+  "datasets": [
+    {
+      "name": "ddb35120",
+      "displayName": "raw_purchases",
+      "query": "SELECT * FROM training_catalog.adam_k_mika_training.raw_purchases"
+    },
+    {
+      "name": "c9ffb11e",
+      "displayName": "user_sales",
+      "query": "SELECT * FROM training_catalog.adam_k_mika_training.user_sales"
+    },
+    {
+      "name": "fc05ae32",
+      "displayName": "country_sales",
+      "query": "SELECT * FROM training_catalog.adam_k_mika_training.country_sales"
+    }
+  ],
+  "pages": [
+    {
+      "name": "9e0c5033",
+      "displayName": "Country Sales",
+      "layout": [
+        {
+          "widget": {
+            "name": "b319fb88",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "fc05ae32",
+                  "fields": [
+                    {
+                      "name": "Product_Name",
+                      "expression": "`Product_Name`"
+                    },
+                    {
+                      "name": "Country",
+                      "expression": "`Country`"
+                    },
+                    {
+                      "name": "sum(Nb_sold)",
+                      "expression": "SUM(`Nb_sold`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Country",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  },
+                  "displayName": "Country"
+                },
+                "y": {
+                  "fieldName": "sum(Nb_sold)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Number of Products sold"
+                },
+                "color": {
+                  "fieldName": "Product_Name",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Product_Name"
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "title": "Top Selling Products by Country",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "ef13032f",
+            "queries": [
+              {
+                "name": "dashboards/01efb654a473108a928631e565710c3e/datasets/01efb654cdc517cea43d333994123c91_Country",
+                "query": {
+                  "datasetName": "fc05ae32",
+                  "fields": [
+                    {
+                      "name": "Country",
+                      "expression": "`Country`"
+                    },
+                    {
+                      "name": "Country_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "Country",
+                    "displayName": "Country",
+                    "queryName": "dashboards/01efb654a473108a928631e565710c3e/datasets/01efb654cdc517cea43d333994123c91_Country"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": ""
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "294119a8",
+            "queries": [
+              {
+                "name": "dashboards/01efb654a473108a928631e565710c3e/datasets/01efb654cdc517cea43d333994123c91_Product_Name",
+                "query": {
+                  "datasetName": "fc05ae32",
+                  "fields": [
+                    {
+                      "name": "Product_Name",
+                      "expression": "`Product_Name`"
+                    },
+                    {
+                      "name": "Product_Name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "Product_Name",
+                    "displayName": "Product_Name",
+                    "queryName": "dashboards/01efb654a473108a928631e565710c3e/datasets/01efb654cdc517cea43d333994123c91_Product_Name"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": ""
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "width": 6,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "8df375ab",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "fc05ae32",
+                  "fields": [
+                    {
+                      "name": "Country",
+                      "expression": "`Country`"
+                    },
+                    {
+                      "name": "sum(Total_income)",
+                      "expression": "SUM(`Total_income`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Country",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  },
+                  "displayName": "Country"
+                },
+                "y": {
+                  "fieldName": "sum(Total_income)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Sum of Total_income"
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "title": "Total Income by Country",
+                "showTitle": true,
+                "showDescription": true,
+                "description": "Total income by Country, with the above filters applied"
+              },
+              "mark": {
+                "colors": [
+                  "#FFAB00",
+                  "#FFAB00",
+                  "#00A972",
+                  "#FF3621",
+                  "#8BCAE7",
+                  "#AB4057",
+                  "#99DDB4",
+                  "#FCA4A1",
+                  "#919191",
+                  "#BF7080"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ]
+    },
+    {
+      "name": "7d3f2b6c",
+      "displayName": "User Sales",
+      "layout": [
+        {
+          "widget": {
+            "name": "1993f3cf",
+            "queries": [
+              {
+                "name": "dashboards/01efb654a473108a928631e565710c3e/datasets/01efb654c7a51245839894f38c2d81fc_First_Name",
+                "query": {
+                  "datasetName": "c9ffb11e",
+                  "fields": [
+                    {
+                      "name": "First_Name",
+                      "expression": "`First_Name`"
+                    },
+                    {
+                      "name": "First_Name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "First_Name",
+                    "displayName": "First_Name",
+                    "queryName": "dashboards/01efb654a473108a928631e565710c3e/datasets/01efb654c7a51245839894f38c2d81fc_First_Name"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": ""
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 3,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "fa5015b6",
+            "queries": [
+              {
+                "name": "dashboards/01efb654a473108a928631e565710c3e/datasets/01efb654c7a51245839894f38c2d81fc_Last_Name",
+                "query": {
+                  "datasetName": "c9ffb11e",
+                  "fields": [
+                    {
+                      "name": "Last_Name",
+                      "expression": "`Last_Name`"
+                    },
+                    {
+                      "name": "Last_Name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "Last_Name",
+                    "displayName": "Last_Name",
+                    "queryName": "dashboards/01efb654a473108a928631e565710c3e/datasets/01efb654c7a51245839894f38c2d81fc_Last_Name"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Last Name"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 0,
+            "width": 3,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "f660db82",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "c9ffb11e",
+                  "fields": [
+                    {
+                      "name": "First_Name",
+                      "expression": "`First_Name`"
+                    },
+                    {
+                      "name": "Last_Name",
+                      "expression": "`Last_Name`"
+                    },
+                    {
+                      "name": "Country",
+                      "expression": "`Country`"
+                    },
+                    {
+                      "name": "Nb_of_products",
+                      "expression": "`Nb_of_products`"
+                    },
+                    {
+                      "name": "total_spent",
+                      "expression": "`total_spent`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "First_Name",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100001,
+                    "title": "First_Name",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false,
+                    "displayName": "First_Name"
+                  },
+                  {
+                    "fieldName": "Last_Name",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100002,
+                    "title": "Last_Name",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false,
+                    "displayName": "Last_Name"
+                  },
+                  {
+                    "fieldName": "Country",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100003,
+                    "title": "Country",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false,
+                    "displayName": "Country"
+                  },
+                  {
+                    "fieldName": "Nb_of_products",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100004,
+                    "title": "Nb_of_products",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false,
+                    "displayName": "Nb_of_products"
+                  },
+                  {
+                    "fieldName": "total_spent",
+                    "numberFormat": "0.00",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "float",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100005,
+                    "title": "total_spent",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false,
+                    "displayName": "total_spent"
+                  }
+                ]
+              },
+              "invisibleColumns": [
+                {
+                  "numberFormat": "0",
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "ID",
+                  "type": "integer",
+                  "displayAs": "number",
+                  "order": 100000,
+                  "title": "ID",
+                  "allowSearch": false,
+                  "alignContent": "right",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                }
+              ],
+              "allowHTMLByDefault": false,
+              "itemsPerPage": 25,
+              "paginationSize": "default",
+              "condensed": true,
+              "withRowNumber": false
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "width": 6,
+            "height": 13
+          }
+        }
+      ]
+    },
+    {
+      "name": "4210fc03",
+      "displayName": "Sales In Time",
+      "layout": [
+        {
+          "widget": {
+            "name": "ed8e72ee",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ddb35120",
+                  "fields": [
+                    {
+                      "name": "monthly(Purchase_Date)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `Purchase_Date`)"
+                    },
+                    {
+                      "name": "sum(Price)",
+                      "expression": "SUM(`Price`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(Purchase_Date)",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Purchase_Date"
+                },
+                "y": {
+                  "fieldName": "sum(Price)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Sum of Price"
+                }
+              },
+              "frame": {
+                "title": "Purchase trend over time",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 9
+          }
+        }
+      ]
+    }
+  ]
+}

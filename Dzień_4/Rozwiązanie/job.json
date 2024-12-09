@@ -1,0 +1,44 @@
+{
+  "name": "Purchase_Data_Refresh",
+  "email_notifications": {
+    "on_success": [
+      "adam.k.mika@gmail.com"
+    ],
+    "on_failure": [
+      "adam.k.mika@gmail.com"
+    ],
+    "no_alert_for_skipped_runs": false
+  },
+  "webhook_notifications": {},
+  "notification_settings": {
+    "no_alert_for_skipped_runs": false,
+    "no_alert_for_canceled_runs": false
+  },
+  "timeout_seconds": 0,
+  "trigger": {
+    "pause_status": "PAUSED",
+    "file_arrival": {
+      "url": "/Volumes/training_catalog/default/projekt/sales/"
+    }
+  },
+  "max_concurrent_runs": 1,
+  "tasks": [
+    {
+      "task_key": "Refresh_DLT",
+      "run_if": "ALL_SUCCESS",
+      "pipeline_task": {
+        "pipeline_id": "1f0482ab-7796-47c6-be4e-460d9465fddd",
+        "full_refresh": true
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    }
+  ],
+  "queue": {
+    "enabled": true
+  },
+  "run_as": {
+    "user_name": "adam.k.mika@gmail.com"
+  }
+}

@@ -15,13 +15,13 @@ api_client = ApiClient(
 
 jobs_api = JobsApi(api_client)
 
-job_id = "931520163112932"
+job_id = "438904916540065"
 job_param_value = "MojaWartoscZLokalnegoKomputera"
 run_id = jobs_api.run_now(job_id=job_id,
                           notebook_params={"job_param_1": job_param_value},
                           jar_params=None,
                           python_params=None,
-                          spark_submit_params=None
+                          spark_submit_params=None,
                           )
 run_api = RunsApi(api_client=api_client)
 

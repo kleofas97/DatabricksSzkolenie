@@ -1,4 +1,13 @@
 # Databricks notebook source
+# MAGIC %md
+# MAGIC Uwaga! Korzystając ze wspólnego clastra nie damy rady puścić tego kodu - skorzystaj z prywatnego clastra
+# MAGIC https://stackoverflow.com/questions/74646723/modulenotfounderror-no-module-named-dlt-error-when-running-delta-live-tables
+# MAGIC https://www.reddit.com/r/databricks/comments/1akayep/dbr_143_making_dlt_only_usable_on_single_user/
+# MAGIC
+# MAGIC Niestety shared cluster nie działają z DLT. Generalnie DLT nie powinno być puszczane w ten sposób, ale jest to forma sprawdzenia czy kod działa dobrze (nie ma np. syntax errorów)
+
+# COMMAND ----------
+
 import dlt 
 import pyspark.sql.functions as F
 
